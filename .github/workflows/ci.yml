@@ -7,28 +7,28 @@ on:
 
 jobs:
   backend-tests:
-    runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+  env:
+    PYTHONPATH: backend
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+  steps:
+    - uses: actions/checkout@v4
 
-      - name: Install backend dependencies
-        working-directory: backend
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
 
-      - name: Run backend tests
-        working-directory: backend
-        run: |
-          pytest -q
+    - name: Install dependencies
+      working-directory: backend
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+
+    - name: Run tests
+      run: |
+        pytest backend/tests -q
 
   frontend-build:
     runs-on: ubuntu-latest
